@@ -17,7 +17,7 @@ class CreateTopicsTable extends Migration
             $table->id();
             $table->timestamps();
 
-            $table->string('sluf');
+            $table->string('slug');
             $table->string('name');
         });
     }
