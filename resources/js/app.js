@@ -1,32 +1,44 @@
-/**
- * First we will load all of this project's JavaScript dependencies which
- * includes Vue and other libraries. It is a great starting point when
- * building robust, powerful web applications using Vue and Laravel.
- */
 
-require('./bootstrap');
+import './bootstrap';// require('./bootstrap');
+import VueRouter from 'vue-router';
+import Vue from 'vue';// window.Vue = require('vue').default;
+import PostList from './PostList';
+import Post from './Post';
+import ApolloClient from 'apollo-boost';
+import VueApollo from 'vue-apollo';
+window.Vue = Vue;
+Vue.use(VueRouter);
 
-window.Vue = require('vue').default;
+const routes = [
+    {
+        path: '/',
+        name: 'index',
+        component:PostList
+    },
+    {
+        path: '/post/:id',
+        name: 'post',
+        component:Post
+    }
+];
+Vue.use(VueApollo);
+const apolloClient = new ApolloClient({
+  // You should use an absolute URL here
+  uri: 'http://127.0.0.1:8000/graphql'
+})
 
-/**
- * The following block of code may be used to automatically register your
- * Vue components. It will recursively scan this directory for the Vue
- * components and automatically register them with their "basename".
- *
- * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
- */
+const apolloProvider = new VueApollo({
+  defaultClient: apolloClient,
+})
 
-// const files = require.context('./', true, /\.vue$/i)
-// files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
+const router = new VueRouter({
+    mode: 'history',
+    routes:routes
+})
 
-Vue.component('example-component', require('./components/ExampleComponent.vue').default);
-
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
- */
-
+// Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 const app = new Vue({
     el: '#app',
+    apolloProvider,
+    router:router
 });
