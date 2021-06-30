@@ -31,6 +31,13 @@ const routes = [
         path:'/authors/:id',
         name:'author',
         component:AuthorPostList
+    },
+    {
+        path:'*',
+        name:'404',
+        component: {
+            template: '<div>Not found</div>'
+        }
     }
 ];
 Vue.use(VueApollo);
@@ -47,6 +54,10 @@ const router = new VueRouter({
     mode: 'history',
     routes:routes
 })
+
+import moment from 'moment';
+Vue.filter("timeago", value => moment(value).fromNow());
+Vue.filter("longDate", value => moment(value).format("MMM Do YYYY"));
 
 // Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 const app = new Vue({
