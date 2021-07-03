@@ -1,0 +1,28 @@
+composer require --dev barryvdh/laravel-ide-helper // to help your editor understand laravel better
+
+composer require laravel/ui //lets you quickly scaffold your frontend
+php artisan ui vue
+npm install & npm run dev
+
+
+npm install tailwindcss
+resources/css, create a folder called app.css and past the 3 directives from the documentation
+from docs: npx tailwindcss init// it creates tailwind.config.js
+tailwind laravel mix
+
+<link rel="stylesheet" href=" {{ asset('css/app.css') }} "> //path starts from public //you can use mix rather than assets so it helps adding text to your assets to version your assets, cuz assets often are cached by browsers
+for mix versioning to work go to webpack file and call mix.version();
+if(mix.inProduction()) mix.version();
+
+<script src="{{ mix('js/app.js') }}" defer></script>
+<div id="app></div>
+
+
+faker
+Seeders:
+\App\Models\User::factory(20)->create();
+Topic::create(['name' => 'Featured Sites', 'slug' => 'featured']);
+Topic::create(['name' => 'Useful Links', 'slug' => 'links']);
+Topic::create(['name' => 'Guids & Tutorials', 'slug' => 'tutorials']);
+\App\Models\Post::factory(20)->create();
+
