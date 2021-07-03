@@ -26,3 +26,19 @@ Topic::create(['name' => 'Useful Links', 'slug' => 'links']);
 Topic::create(['name' => 'Guids & Tutorials', 'slug' => 'tutorials']);
 \App\Models\Post::factory(20)->create();
 
+
+
+public function posts() :HasMany //need to import HasMany //BelongsTo
+{
+    return $this->hasMany(Post::class);
+}
+
+$table->unsignedBigInteger('topic_id)->index();
+
+php artisan make:factory PostFactory
+$this->faker->name(),
+$this->faker->unique()->safeEmail()
+$this->faker->sentence(3)//3 words
+$this->faker->paragraph(10,true)//second argument to return it as a text and not array(default is array) //10 paragraphs
+$this->faker->text(200)//200 letters
+
