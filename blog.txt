@@ -15,7 +15,9 @@ for mix versioning to work go to webpack file and call mix.version();
 if(mix.inProduction()) mix.version();
 
 <script src="{{ mix('js/app.js') }}" defer></script>
-<div id="app></div>
+<div id="app>
+    <router-view></router-view>
+</div>
 
 
 faker
@@ -81,7 +83,84 @@ go to app.js and remove Vue.component//example component//I should know what it 
     //require('./bootstrap') => import './bootstrap';
     //require('vue'); => import Vue from 'vue'; //Vue because it is the default export when cntr click on 'vue'
     //require('lodash'); => import * as lodash from 'lodash'; then use lodash rather than require('lodash');
-    docs
+    
+    
+    
+    docs Router
     import VueRouter from 'vue-router';
     Vue.use(VueRouter)
+    const routes = [
+    {
+        path: '/',
+        name: 'index',
+        component:PostList
+    },
+    {
+        path: '/post/:id',
+        name: 'post',
+        component:Post
+    },
+    {
+        path:'/topic/:slug',
+        name:'topic',
+        component:TopicPostList
+    },
+    {
+        path:'/authors/:id',
+        name:'author',
+        component:AuthorPostList
+    },
+    {
+        path:'*',
+        name:'404',
+        component: {
+            template: '<div>Not found</div>'
+        }
+    }
+];
+const router = new VueRouter({
+    mode: 'history',
+    routes:routes
+})
+const app = new Vue({
+    el: '#app',
+    //apolloProvider,
+    router:router
+});
 
+
+//HTML5 History Mode
+//in vue router docs
+mode:'history';
+Route::get('/{any?}', function () {
+    return view('welcome');
+})->where('any','^(?!graphql)[\/\w\.-]*');
+
+//VUE APOLLO
+    npm install --save vue-apollo graphql apollo-boost
+    import ApolloClient from 'apollo-boost'
+
+    const apolloClient = new ApolloClient({
+        // You should use an absolute URL here
+        uri: 'http://127.0.0.1:8000/graphql'
+    })
+    import Vue from 'vue'
+    import VueApollo from 'vue-apollo'
+    Vue.use(VueApollo)
+    const apolloProvider = new VueApollo({
+        defaultClient: apolloClient,
+    })
+    //now provide apolloProvider in the vue instance
+
+npm i graphql-tag
+import gql from 'graphql-tag';
+export default {
+    apollo: {
+        posts: gql`query{
+            posts {
+                id
+                title
+            }
+        }`
+    }
+}
