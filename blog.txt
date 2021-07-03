@@ -156,6 +156,9 @@ npm i graphql-tag
 import gql from 'graphql-tag';
 export default {
     apollo: {
+        components: {
+            componentName //localRegistration
+        }
         posts: gql`query{
             posts {
                 id
@@ -164,3 +167,87 @@ export default {
         }`
     }
 }
+
+//Vue Router Queries Loading state
+    <div v-if="$apollo.loading">Loading</div>
+    <div v-if="$apollo.queries.ping.loading">Loading</div>
+    <div v-else>
+    <div v-for="post in posts" :key="post.id">{{ post.id }}</div>
+    </div>
+// Vue Registration Local Registration and props and router-link
+
+
+
+    <PostListItem v-for="post in posts" :key="post.id" :post="post" class="mt-10">
+        <!-- {{ post.id }} is titled: {{ post.title }} -->
+    </PostListItem>
+
+    //in the PostListItem
+    <template>
+        <div>
+            <router-link :to="{name:'post',params: {id:post.id}}">
+                <h4 class="text-2xl pb-3 font-semibold hover:underline hover:text-gray-200">{{ post.title }}</h4>
+            </router-link>
+        
+            <p class="text-gray-600 pb-3">{{ post.lead }}</p>
+            <div class="text-sm text-gray-600">
+                By <router-link :to="{name:'author',params:{id:post.author.id}}" class="underline hover:text-black">{{ post.author.name }}</router-link>&nbsp;&nbsp;in <router-link :to="{name:'topic',params:{slug:post.topic.slug}}" class="underline hover:text-black">{{ post.topic.name }}</router-link>&nbsp;* {{ post.created_at | timeago }}
+            </div>
+        </div>
+    </template>
+    <script>
+
+    export default {
+        props: {
+            post: Object
+       }
+    }
+    </script>
+    //in the other page access data from router-link this.$route.params.id
+
+
+
+//Vue Apollo variable //QUERIES
+    //Query with parameters
+    //Reactive Parameters
+
+    //Static
+    ping: {
+    // gql query
+    query: gql`query PingMessage($message: String!) {
+      ping(message: $message){
+          id
+          title
+      }
+    }`,
+    // Static parameters
+    variables: {
+      message: 'Meow',
+    },
+  },
+  //Reactive same but variables is a method (variables expected to change)
+  variables () {
+      // Use vue reactive properties here
+      return {
+          message: this.pingInput,
+      }
+    },
+
+
+
+
+    //Filters & Date formatting
+    //npm i moment
+    import moment from "moment";
+
+    Vue.filter("timeago",value =>moment(value).fromNow)
+    Vue.filter("longDate",value =>moment(value).format("MMMM Do YYYY"))
+
+    {{ post.create_at | timeago }}
+
+
+
+
+    error() {
+        this.$router.push({ name:"404" });
+    }
